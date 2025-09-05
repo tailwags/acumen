@@ -11,4 +11,4 @@ repository = "https://github.com/morr0ne/acumen"
 include = ["src/**/*.rs", "README.md", "LICENSE"]
 
 [dependencies]
-rustix = { version = "1.0.7", features = ["process"] }
+xenia = "0.0.3"

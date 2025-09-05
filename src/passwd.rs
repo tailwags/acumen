@@ -3,7 +3,7 @@ use std::{
     io::{self, BufRead, BufReader},
 };
 
-use rustix::process::{Gid, Uid};
+use xenia::{Gid, Uid};
 
 pub fn getpwuid(uid: Uid) -> Option<Passwd> {
     let mut parser = PasswdEntries::new().ok()?;
@@ -40,9 +40,16 @@ impl Passwd {
         let name = entries.next()?.to_string();
         let passwd = entries.next()?.to_string();
 
-        let uid = entries.next()?.parse().map(Uid::from_raw).ok()?;
-
-        let gid = entries.next()?.parse().map(Gid::from_raw).ok()?;
+        let uid = entries
+            .next()?
+            .parse()
+            .map(|uid| unsafe { Uid::from_raw(uid) })
+            .ok()?;
+        let gid = entries
+            .next()?
+            .parse()
+            .map(|gid| unsafe { Gid::from_raw(gid) })
+            .ok()?;
 
         let gecos = entries.next()?.to_string();
         let dir = entries.next()?.to_string();

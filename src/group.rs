@@ -1,9 +1,11 @@
-use std::fs::File;
-use std::io::{self, Read};
-use std::path::Path;
-use std::str;
+use std::{
+    fs::File,
+    io::{self, Read},
+    path::Path,
+    str,
+};
 
-use rustix::process::Gid;
+use xenia::Gid;
 
 type Result<T = ()> = core::result::Result<T, GroupParseError>;
 
@@ -190,7 +192,7 @@ impl GroupEntries {
         Ok(GroupEntry {
             name,
             password,
-            gid: Gid::from_raw(group_id),
+            gid: unsafe { Gid::from_raw(group_id) },
             userlist,
         })
     }
